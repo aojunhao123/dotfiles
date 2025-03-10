@@ -1,0 +1,43 @@
+[user]
+	name = aojunhao123
+	email = 1844748581@qq.com
+
+[core]
+ignoreCase=false
+[safe]
+	directory = /opt/homebrew
+[alias]
+	br = branch
+	cb = checkout -b
+	co = checkout
+	sh = stash
+	shp = stash pop
+	shls = stash list
+	cp = cherry-pick
+	cpc = cherry-pick --continue
+	cpa = cherry-pick --abort
+	cpn = cherry-pick -n
+	sync = "!f() { branch=${1:-master}; git fetch upstream $branch --no-tags && git checkout $branch && git merge upstream/$branch && git push origin $branch; }; f"
+	main = checkout main
+	ci-trigger = commit --allow-empty -m \"chore: trigger CI build\"
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	master = checkout master
+	aa = add .
+	cm = commit -m
+    s = status -s                                 # 简短状态输出
+    unstage = reset HEAD --                       # 取消暂存文件
+    last = log -1 HEAD                            # 查看最后一次提交
+    amend = commit --amend                        # 修改最后一次提交
+    undo = reset --soft HEAD^                     # 撤销最后一次提交
+    conflicts = diff --name-only --diff-filter=U  # 显示所有冲突文件
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[push]
+	autoSetupRemote = true
+[color]
+    ui = auto                               # 启用颜色输出
+[help]
+    autocorrect = 1                         # 自动纠正错误的git命令
