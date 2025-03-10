@@ -17,7 +17,19 @@ ignoreCase=false
 	cpc = cherry-pick --continue
 	cpa = cherry-pick --abort
 	cpn = cherry-pick -n
-	sync = "!f() { branch=${1:-master}; git fetch upstream $branch --no-tags && git checkout $branch && git merge upstream/$branch && git push origin $branch; }; f"
+	sync = "!f() { \
+    if [ -z "$1" ]; then \
+        default_branch=$(git remote show origin | grep "HEAD branch" | cut -d: -f2 | xargs); \
+        branch=${default_branch:-main}; \
+    else \
+        branch=$1; \
+    fi; \
+    echo "Syncing branch: $branch"; \
+    git fetch upstream $branch --no-tags && \
+    git checkout $branch && \
+    git merge upstream/$branch && \
+    git push origin $branch; \
+}; f"
 	main = checkout main
 	ci-trigger = commit --allow-empty -m \"chore: trigger CI build\"
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
