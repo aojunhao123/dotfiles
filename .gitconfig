@@ -19,8 +19,8 @@ ignoreCase=false
 	cpn = cherry-pick -n
 	sync = "!f() { \
     if [ -z "$1" ]; then \
-        default_branch=$(git remote show origin | grep "HEAD branch" | cut -d: -f2 | xargs); \
-        branch=${default_branch:-main}; \
+        default_branch=$(git remote show upstream | grep "HEAD branch" | cut -d: -f2 | xargs); \
+        branch=${default_branch:-master}; \
     else \
         branch=$1; \
     fi; \
@@ -31,7 +31,7 @@ ignoreCase=false
     git push origin $branch; \
 }; f"
 	main = checkout main
-	ci-trigger = commit --allow-empty -m \"chore: trigger CI build\"
+	ci-trigger = !git commit --allow-empty -m \"chore: trigger CI build\" && git p
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 	master = checkout master
 	aa = add .
@@ -42,6 +42,7 @@ ignoreCase=false
     amend = commit --amend                        # 修改最后一次提交
     undo = reset --soft HEAD^                     # 撤销最后一次提交
     conflicts = diff --name-only --diff-filter=U  # 显示所有冲突文件
+	p = push
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
